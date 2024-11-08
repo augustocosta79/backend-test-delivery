@@ -9,12 +9,10 @@ authentication_router = Router(auth=JWTAuth())
 
 service = AuthenticationService()
 
-
 @authentication_router.post("/login", auth=None)
 def auth_login(request, input_schema: LoginSchemaInput):
     """Autenticação de usuário"""
     return service.auth_login(request, input_schema)
-
 
 @authentication_router.get("/me", response=UserOutputSchema)
 def auth_me(request):

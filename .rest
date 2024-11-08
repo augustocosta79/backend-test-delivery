@@ -1,0 +1,18 @@
+POST http://127.0.0.1:8000/api/auth/login
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiY2JhM2Q3NGYtMzVhZi00ZWE2LWE5NDYtOGY4ZjVmNDZjOGRkIiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJleHAiOjE3MzEwNDU0Njd9.LoGdTp-ubJKlc-b2v8IuVv9aZnbxsPOuqc1INLKw0bA
+
+{
+    "email": "admin@admin.com",
+    "password": "admin"
+}
+
+####
+GET http://127.0.0.1:8000/api/auth/me
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiY2JhM2Q3NGYtMzVhZi00ZWE2LWE5NDYtOGY4ZjVmNDZjOGRkIiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJleHAiOjE3MzEwNDYyMjR9.KEbpyPjR_NZJ4Pk1u_2INu2FUMLJH2pk8V5Vrzj8gAM
+
+{
+    "email": "admin@admin.com",
+    "password": "admin"
+}
