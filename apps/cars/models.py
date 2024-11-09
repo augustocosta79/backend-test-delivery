@@ -1,8 +1,9 @@
 from uuid import uuid4
+
+from apps.users.models import CustomUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.users.models import CustomUser
 
 # Create your models here.
 class Car(models.Model):

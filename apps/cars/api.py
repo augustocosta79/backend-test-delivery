@@ -1,19 +1,12 @@
 import uuid
+from typing import List
 
-from django.contrib.auth import authenticate
-
-from ninja import Router
-
-from apps.users.schema import UserSchema
-from apps.users.models import CustomUser
 from apps.users.service import UserService
+from ninja import Router
 from utils.jwt import JWTAuth
 
-from .schema import CarSchema, CarCreateSchema
+from .schema import CarCreateSchema, CarSchema
 from .service import CarService
-from .models import Car
-
-from typing import List
 
 car_router = Router(auth=JWTAuth())
 # car_router = Router()
@@ -24,6 +17,7 @@ user_service = UserService()
 @car_router.get("/", response=List[CarSchema])
 def list_cars(request):
     return service.list_cars()
+
 
 @car_router.get("/{car_id}", response=CarSchema)
 def get_car(request, car_id: uuid.UUID):

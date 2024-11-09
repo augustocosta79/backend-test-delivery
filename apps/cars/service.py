@@ -1,26 +1,21 @@
+from http import HTTPStatus
 from typing import List
 from uuid import UUID
-from django.shortcuts import get_object_or_404
-from .schema import CarSchema, CarCreateSchema
 
-from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
+from django.core.mail import EmailMessage
+from django.shortcuts import get_object_or_404
+from ninja.errors import HttpError
+from utils.pdf import PdfService
 
 from .models import Car
 
-from apps.users.models import CustomUser
-
-from ninja.errors import HttpError
-from http import HTTPStatus
-
-from utils.pdf import PdfService
 
 # Create your views here.
 class CarService:
     @staticmethod
     def get_car_by_id(car_id: UUID) -> Car:
         return get_object_or_404(Car, id=car_id)
-    
 
     @staticmethod
     def get_all_cars() -> List[Car]:
@@ -32,24 +27,29 @@ class CarService:
         return car
 
     def create_car(self, payload, user) -> Car:
-        new_car = Car(name=payload.name, year=payload.year, description=payload.description, sold=payload.sold, user=user)
+        new_car = Car(
+            name=payload.name,
+            year=payload.year,
+            description=payload.description,
+            sold=payload.sold,
+            user=user,
+        )
         new_car.save()
 
         pdf_file = PdfService.generate_car_pdf(new_car)
 
         # Send email with attachment
         email = EmailMessage(
-            subject='New Car Added',
-            body=f'A new car has been added: {new_car.name} ({new_car.year})',
+            subject="New Car Added",
+            body=f"A new car has been added: {new_car.name} ({new_car.year})",
             from_email=settings.EMAIL_HOST_USER,
-            to=['dev3.engenhadev@gmail.com'],
-            # to=[settings.ADMIN_EMAIL],
+            to=[settings.EMAIL_TO_ADDRESS],
         )
-        email.attach('car_details.pdf', pdf_file, 'application/pdf')
+        email.attach("car_details.pdf", pdf_file, "application/pdf")
         email.send(fail_silently=False)
 
         return new_car
-    
+
     def list_cars(self) -> List[Car]:
         if not (cars := self.get_all_cars()):
             raise HttpError(HTTPStatus.NOT_FOUND, "Não há carros para retornar")

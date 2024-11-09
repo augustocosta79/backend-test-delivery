@@ -3,6 +3,7 @@ import uuid
 from http import HTTPStatus
 
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from ninja.errors import HttpError
 
 from utils.validation import ValidationService
@@ -37,7 +38,7 @@ class UserService:
         return True
 
     def get_user_by_id(self, user_id: uuid.UUID) -> CustomUser:
-        return CustomUser.objects.get(pk=user_id)
+        return get_object_or_404(CustomUser, pk=user_id)
 
     def get_user(self, user_id: uuid.UUID) -> UserSchema:
         if not (user := self.get_user_by_id(user_id)):
